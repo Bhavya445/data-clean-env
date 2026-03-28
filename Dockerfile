@@ -1,4 +1,3 @@
-cat > /Users/bhavya445/Desktop/p1/Dockerfile << 'EOF'
 FROM python:3.11-slim
 
 WORKDIR /app
@@ -15,4 +14,3 @@ ENV WORKERS=2
 EXPOSE 7860
 
 CMD uvicorn server.app:app --host $HOST --port $PORT --workers $WORKERS
-EOF

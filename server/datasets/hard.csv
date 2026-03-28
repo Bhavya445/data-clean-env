@@ -1,0 +1,21 @@
+id,name,age,country,salary,join_date,department,is_active,performance_score
+1,Alice,30,USA,75000,2021-03-15,Engineering,TRUE,4.5
+2,Bob,25,United States,"eighty thousand",2019-07-22,engineering,FALSE,3.8
+3,Carol,32,US,92000,"March 5 2020",Engineering,1,4.9
+4,Dave,,Canada,61000,2022-01-10,Sales,FALSE,4.2
+5,Eve,41,canada,999999,2018-11-30,SALES,TRUE,4.7
+6,Frank,26,UK,54000,2023-05-18,,0,3.5
+7,Grace,35,United Kingdom,87000,2020-09-04,Marketing,TRUE,4.1
+8,Heidi,30,,69000,"09/12/2021",Marketing,FALSE,4.0
+9,Ivan,150,USA,78000,2017-06-25,Engineering,1,3.9
+10,Judy,27,usa,58000,2022-08-14,Sales,FALSE,3.6
+11,Karl,55,Canada,95000,2015-02-28,Engineering,TRUE,4.8
+12,Leo,,UK,"seventy two thousand",2020-04-17,marketing,0,4.3
+13,Mia,29,United States,63000,2021-10-05,Sales,FALSE,
+14,Ned,44,CA,81000,"November 20 2019",Engineering,TRUE,4.6
+15,Paul,31,USA,,2022-03-22,Engineering,FALSE,4.1
+16,Quinn,28,Australia,71000,2023-01-08,Marketing,TRUE,3.9
+17,Rose,-5,Australia,68000,2021-07-19,,FALSE,4.0
+18,Sam,26,AUSTRALIA,77000,2022-09-30,Marketing,TRUE,
+19,Tina,38,usa,88000,2019-12-01,ENGINEERING,1,4.4
+1,Alice,30,USA,75000,2021-03-15,Engineering,TRUE,4.5

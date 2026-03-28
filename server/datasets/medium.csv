@@ -1,0 +1,16 @@
+id,name,age,salary,hire_date,is_manager,rating
+1,Alice,"thirty",75000,2021-03-15,TRUE,4.5
+2,Bob,25,"eighty thousand",2019-07-22,FALSE,3.8
+3,Carol,32,92000,"March 5 2020",1,4.9
+4,Dave,28,61000,2022-01-10,FALSE,"four point two"
+5,Eve,41,"one hundred thousand",2018-11-30,TRUE,4.7
+6,Frank,"twenty six",54000,2023-05-18,0,3.5
+7,Grace,35,87000,2020-09-04,TRUE,4.1
+8,Heidi,30,69000,"09/12/2021",FALSE,4.0
+9,Ivan,"forty",78000,2017-06-25,1,"three point nine"
+10,Judy,27,58000,2022-08-14,FALSE,3.6
+11,Karl,55,95000,2015-02-28,TRUE,4.8
+12,Leo,"thirty three",72000,2020-04-17,0,4.3
+13,Mia,29,63000,2021-10-05,FALSE,3.7
+14,Ned,44,81000,"November 20 2019",TRUE,4.6
+15,Paul,31,70000,2022-03-22,FALSE,"four point one"

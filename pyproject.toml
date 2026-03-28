@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "data_clean_env"
+version = "1.0.0"
+description = "An OpenEnv environment for data cleaning tasks"
+requires-python = ">=3.10"
+dependencies = [
+    "openenv-core",
+    "fastapi>=0.104.0",
+    "uvicorn>=0.24.0",
+    "pydantic>=2.0.0",
+    "openai>=1.0.0",
+]
+
+[project.scripts]
+server = "server.app:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]

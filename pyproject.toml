@@ -8,7 +8,7 @@ version = "1.0.0"
 description = "An OpenEnv environment for data cleaning tasks"
 requires-python = ">=3.10"
 dependencies = [
-    "openenv-core",
+    "openenv-core>=0.2.0",
     "fastapi>=0.104.0",
     "uvicorn>=0.24.0",
     "pydantic>=2.0.0",
@@ -16,7 +16,4 @@ dependencies = [
 ]
 
 [project.scripts]
-server = "server.app:app"
-
-[tool.hatch.build.targets.wheel]
-packages = ["."]
+server = "server.app:main"

@@ -4,6 +4,7 @@ description: >
   A data cleaning RL environment where an AI agent inspects dirty datasets
   and identifies quality issues (nulls, type errors, outliers, inconsistencies).
   Three tasks of increasing difficulty with programmatic graders.
+entry_point: server.app:main
 tags:
   - openenv
   - data-cleaning

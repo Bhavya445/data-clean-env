@@ -28,7 +28,7 @@ ENV_BASE_URL = os.getenv("ENV_BASE_URL", "http://localhost:7860")
 try:
     client = OpenAI(base_url=API_BASE_URL, api_key=API_KEY)
 except Exception as e:
-    print(f"Warning: Could not initialize OpenAI client: {e}")
+    print(f"Warning: Could not initialize OpenAI client: {e}", flush=True)
     client = None
 
 SYSTEM_PROMPT = """
@@ -124,7 +124,6 @@ def parse_response(text: str, task_name: str) -> DataCleanAction:
             raw_response=text,
         )
     except Exception:
-        # Use fallback response
         fallback = FALLBACK_RESPONSES.get(task_name, FALLBACK_RESPONSES["full_audit"])
         return DataCleanAction(
             issues=fallback["issues"],
@@ -139,33 +138,26 @@ def parse_response(text: str, task_name: str) -> DataCleanAction:
 
 def run_task(env_client, task_name: str) -> float:
     """Reset env to a specific task, run the agent once, return score."""
-    print(f"\n{'='*60}")
-    print(f"TASK: {task_name}")
-    print(f"{'='*60}")
+    print(f"[START] task={task_name}", flush=True)
 
     try:
         with env_client as env:
-            # Reset
+
             try:
                 result = env.reset()
                 obs = result.observation
             except Exception as e:
-                print(f"Reset failed: {e}")
+                print(f"Reset failed: {e}", flush=True)
+                print(f"[END] task={task_name} score=0.0 steps=0", flush=True)
                 return 0.0
 
-            print(f"Task description:\n  {obs.task_description}\n")
-            print(f"Dataset preview (first 5 lines):")
-            for line in obs.dataset_csv.strip().split("\n")[:6]:
-                print(f"  {line}")
-            print("  ...")
+            print(f"Task: {obs.task_description}", flush=True)
 
-            # Build prompt
             user_prompt = (
                 f"Task: {obs.task_description}\n\n"
                 f"Dataset (CSV):\n{obs.dataset_csv}"
             )
 
-            # Call LLM
             raw_text = None
             if client is not None:
                 try:
@@ -179,35 +171,33 @@ def run_task(env_client, task_name: str) -> float:
                         temperature=0.1,
                     )
                     raw_text = response.choices[0].message.content
-                    print(f"\nModel response (truncated):\n  {raw_text[:300]}...")
+                    print(f"Model response received", flush=True)
                 except Exception as e:
-                    print(f"LLM call failed: {e}, using fallback response")
+                    print(f"LLM call failed: {e}, using fallback", flush=True)
                     raw_text = None
 
             if raw_text is None:
                 fallback = FALLBACK_RESPONSES.get(task_name, FALLBACK_RESPONSES["full_audit"])
                 raw_text = json.dumps(fallback)
-                print(f"Using fallback response for {task_name}")
+                print(f"Using fallback response for {task_name}", flush=True)
 
-            # Parse into action
             action = parse_response(raw_text, task_name)
-            print(f"\nParsed issues ({len(action.issues)}):")
-            for i, issue in enumerate(action.issues[:5]):
-                print(f"  {i+1}. {issue}")
+            print(f"Parsed {len(action.issues)} issues", flush=True)
 
-            # Step environment
             try:
                 step_result = env.step(action)
                 score = step_result.reward if step_result.reward is not None else 0.0
-                print(f"\nFeedback: {step_result.observation.step_feedback}")
-                print(f"Score: {score:.3f}")
+                print(f"[STEP] step=1 reward={score:.4f}", flush=True)
+                print(f"[END] task={task_name} score={score:.4f} steps=1", flush=True)
                 return score
             except Exception as e:
-                print(f"Step failed: {e}")
+                print(f"Step failed: {e}", flush=True)
+                print(f"[END] task={task_name} score=0.0 steps=1", flush=True)
                 return 0.0
 
     except Exception as e:
-        print(f"Task {task_name} failed entirely: {e}")
+        print(f"Task {task_name} failed: {e}", flush=True)
+        print(f"[END] task={task_name} score=0.0 steps=0", flush=True)
         return 0.0
 
 
@@ -216,9 +206,9 @@ def run_task(env_client, task_name: str) -> float:
 # ---------------------------------------------------------------------------
 
 def main():
-    print("DataCleanEnv — Baseline Inference Script")
-    print(f"Model: {MODEL_NAME}")
-    print(f"Environment: {ENV_BASE_URL}")
+    print("DataCleanEnv — Baseline Inference Script", flush=True)
+    print(f"Model: {MODEL_NAME}", flush=True)
+    print(f"Environment: {ENV_BASE_URL}", flush=True)
 
     tasks = ["null_hunter", "type_fixer", "full_audit"]
     scores = {}
@@ -228,18 +218,19 @@ def main():
             env_client = DataCleanEnv(base_url=ENV_BASE_URL).sync()
             score = run_task(env_client, task)
         except Exception as e:
-            print(f"Failed to run task {task}: {e}")
+            print(f"Failed to run task {task}: {e}", flush=True)
+            print(f"[END] task={task} score=0.0 steps=0", flush=True)
             score = 0.0
         scores[task] = score
 
-    print(f"\n{'='*60}")
-    print("FINAL SCORES")
-    print(f"{'='*60}")
+    print(f"\n{'='*60}", flush=True)
+    print("FINAL SCORES", flush=True)
+    print(f"{'='*60}", flush=True)
     for task, score in scores.items():
-        print(f"  {task:20s}: {score:.3f}")
+        print(f"  {task:20s}: {score:.3f}", flush=True)
     avg = sum(scores.values()) / len(scores)
-    print(f"  {'AVERAGE':20s}: {avg:.3f}")
-    print(f"{'='*60}")
+    print(f"  {'AVERAGE':20s}: {avg:.3f}", flush=True)
+    print(f"{'='*60}", flush=True)
 
     return scores
 
